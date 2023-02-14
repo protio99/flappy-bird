@@ -30,4 +30,5 @@ The index.html file is even more simple than the structure.
 As you can see, we have a structure based on div tags. The 'game-container' tag is our main container, inside of which we have the 'sky' container where we'll put the bird and the top obstacles, and the 'ground' container where part of the bottom obstacles will be contained.
 
 Using basic styles, we are going to achieve the following result.
-![basic stylesheet](https://drive.google.com/file/d/1o2rb6NmFRd0lPEwJ9dhbMMTmurwJ0xUE/view?usp=share_link)
+<img src="https://user-images.githubusercontent.com/76016357/218874647-580e0322-fa9e-4896-aeab-6bccdd19a2ec.png"  width="600">
+![basic-css](https://user-images.githubusercontent.com/76016357/218874647-580e0322-fa9e-4896-aeab-6bccdd19a2ec.png)
