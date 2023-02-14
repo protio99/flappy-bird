@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const bird = document.querySelector('.bird')
     const gameDisplay = document.querySelector('.game-container')
-    const ground = document.querySelector('.ground')
+    const ground = document.querySelector('.ground-moving')
+
 
     let birdLeft = 220
     let birdBottom = 100
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (
                 obstacleLeft > 200 && obstacleLeft < 280 && birdLeft === 220 &&
-                (birdBottom < obstacleBottom + 153 || birdBottom > obstacleBottom + gap - 200) ||
+                (birdBottom < obstacleBottom + 150 || birdBottom > obstacleBottom + gap - 200) ||
                 birdBottom === 0) {
                 gameOver()
                 clearInterval(timerId)
@@ -79,10 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     generateObstacle()
 
+
     function gameOver() {
         clearInterval(gameTimerId)
-        console.log("Game over");
         isGameOver = true
+        console.log("Game over");
         document.removeEventListener('keyup', control)
+        ground.classList.add('ground')
+        ground.classList.remove('ground-moving')
     }
 })
