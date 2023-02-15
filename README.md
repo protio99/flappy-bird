@@ -83,12 +83,157 @@ The **'control'** function is very simple. We are going to capture the event pro
 
 ```js
   function jump() {
-  //First check that the bird is not outside the game container
-    if (birdBottom < gameDisplayHeight) {
+    if (birdBottom < 500) {
       birdBottom += 50;
       bird.style.bottom = `${birdBottom}px`;
     }
   }
   document.addEventListener("keyup", control);
 ```
+The `jump()` function first checks whether the bird is outside of the game container (which is set at 500 pixels). If not, the distance between the **'bird'** and the **'bottom'** of the container will increase by **50 pixels** every time the space key is pressed. This behavior is controlled using the method `addEventListener()`, which constantly listens for the keyup event. Every time the keyup is pressed, the method calls the function `control()`, and control, in turn, calls `jump()` .
 
+Learn more about [addEventListener](https://developer.mozilla.org/es/docs/Web/API/EventTarget/addEventListener) method
+Learn more about [keyup](https://www.w3schools.com/jsref/event_onkeyup.asp) event
+```
+#### 3.3. gameOver() function
+Before pass trought the largest function in the program, let's talk about the `gameOver()` function. 
+```js
+  function gameOver() {
+    clearInterval(gameTimerId);
+    isGameOver = true;
+    document.removeEventListener("keyup", control);
+  }
+```
+Do you remember when we talked about the `setInterval()` function? Well, if you recall, I mentioned that the function returns an ID, and that's where we'll use it. When the `gameOver()` function is called, the game should stop. We'll use the `clearInterval()` function, which is the opposite of the `setInterval()` function, to stop the motion of the bird.
+The `removeEventListener()` method is the opposite of the `addEventListener()` method, so you can imagine what it does.
+
+Regarding the `isGameOver` variable, we'll discuss it in a moment.
+
+Learn more about [clearInterval()](https://developer.mozilla.org/en-US/docs/Web/API/clearInterval) method
+Learn more about [removeEventListener()](https://developer.mozilla.org/es/docs/Web/API/EventTarget/removeEventListener) method
+
+#### 3.4. generateObstacle() function
+This is the largest part of the code, and we'll analyze every part.
+```js
+  function generateObstacle() {
+    let obstacleLeft = gameDisplayWidth;
+    let randomHeight = Math.random() * 60;
+    let obstacleBottom = randomHeight;
+    const obstacle = document.createElement("div");
+    const topObstacle = document.createElement("div");
+    if (!isGameOver) {
+      obstacle.classList.add("obstacle");
+      topObstacle.classList.add("topObstacle");
+    }
+    gameDisplay.appendChild(obstacle);
+    gameDisplay.appendChild(topObstacle);
+    obstacle.style.left = `${obstacleLeft}px`;
+    topObstacle.style.left = `${obstacleLeft}px`;
+    obstacle.style.bottom = `${obstacleBottom}px`;
+    topObstacle.style.bottom = `${obstacleBottom + gap}px`;
+
+    function moveObstacle() {
+      obstacleLeft -= 2;
+      obstacle.style.left = `${obstacleLeft}px`;
+      topObstacle.style.left = `${obstacleLeft}px`;
+
+      if (obstacleLeft === -60) {
+        clearInterval(timerId);
+        gameDisplay.removeChild(obstacle);
+        gameDisplay.removeChild(topObstacle);
+      }
+      if (
+        (obstacleLeft > birdLeft - obstacleWidth &&
+          obstacleLeft < birdRight &&
+          birdLeft === 220 &&
+          (birdBottom < obstacleBottom + groundHeight ||
+            birdBottom > obstacleBottom + gap - (groundHeight + birdHeight))) ||
+        birdBottom === 0
+      ) {
+        gameOver();
+        clearInterval(timerId);
+      }
+    }
+
+    let timerId = setInterval(moveObstacle, 20);
+    if (!isGameOver) setTimeout(generateObstacle, 3300);
+  }
+  generateObstacle();
+```
+
+Let's analyze the first part, just before the first conditional.
+```js
+    let obstacleLeft = gameDisplayWidth;
+    let randomHeight = Math.random() * 60;
+    let obstacleBottom = randomHeight;
+    const obstacle = document.createElement("div");
+    const topObstacle = document.createElement("div");
+```
+As you can see, we have a few variables and constants. The `obstacleLeft` variable is set to 500, which is the width of the container. This means that the obstacles are being generated outside of the container.
+
+The variable `randomHeight` refers to the height of the obstacle bottom that will be generated. We'll use the `Math` object and its `random` method, which returns a number between zero and one. If we multiply this by 60, we will obtain a number between zero and sixty.
+
+Next, we will use the `createElement()` method to create two new `<div>` tags. One will be for the obstacle itself, and the other for the top obstacle. The top obstacle is essentially the same as the bottom obstacle but with a 180-degree rotation.
+Learn more about [createElement()](https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement) method.
+
+Learn more about [Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Matht) object.
+
+Learn more about [random()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random) method.
+
+The second part of the code verify the variable isGameOver, which is initially set as false.
+```js
+if (!isGameOver) {
+      obstacle.classList.add("obstacle");
+      topObstacle.classList.add("topObstacle");
+    }
+```
+If it's not game over, which means we are still playing, we'll add two new styles using the `classList` property and the `add()` method
+
+<img src="https://user-images.githubusercontent.com/76016357/219120015-20253785-a4dd-4418-8e97-3dffeed5846b.png"  width="400">
+
+It's important to note that all elements have an absolute position. This position will help us understand the rules of the game over condition
+
+Learn more about [classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList) property.
+
+Next, there's this portion of code
+```js
+    gameDisplay.appendChild(obstacle);
+    gameDisplay.appendChild(topObstacle);
+    obstacle.style.left = `${obstacleLeft}px`;
+    topObstacle.style.left = `${obstacleLeft}px`;
+    obstacle.style.bottom = `${obstacleBottom}px`;
+    topObstacle.style.bottom = `${obstacleBottom + gap}px`;
+```
+Using the method `appendChild()`, we will append the obstacle to the main container. Then, using the property `style`, we will add the left and bottom styles. Remember that we already discussed the meaning of each variable. The top obstacle is a reflection of the bottom obstacle, which means that it has the same values, except for the `style.bottom` property. A gap (set to 430) is added to create the space between both obstacles.
+
+#### 3.6 moveObstacle() function
+
+```js
+function moveObstacle() {
+      obstacleLeft -= 2;
+      obstacle.style.left = `${obstacleLeft}px`;
+      topObstacle.style.left = `${obstacleLeft}px`;
+
+      if (obstacleLeft === -60) {
+        clearInterval(timerId);
+        gameDisplay.removeChild(obstacle);
+        gameDisplay.removeChild(topObstacle);
+      }
+      if (
+        (obstacleLeft > birdLeft - obstacleWidth &&
+          obstacleLeft < birdRight &&
+          birdLeft === 220 &&
+          (birdBottom < obstacleBottom + groundHeight ||
+            birdBottom > obstacleBottom + gap - (groundHeight + birdHeight))) ||
+        birdBottom === 0
+      ) {
+        gameOver();
+        clearInterval(timerId);
+      }
+    }
+
+    let timerId = setInterval(moveObstacle, 20);
+```
+
+
+Learn more about [add()](https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/add) method.
