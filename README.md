@@ -6,12 +6,12 @@
 ---------------------
 Hi! Welcome to this project :hugs:. This is a clone of the famous game Flappy Bird created using Vanilla JavaScript, the DOM, and a few interesting methods that helped us create the motion effect:
 * createElement()
-* forEach()
 * setInterval()
 * clearInterval()
 * addEventListener() ✨
 * removeEventListener()
 
+I highly recommend this project to those who are learning more about DOM manipulation. It's a very fun and educational project.
 In this article, I will briefly explain the logic behind this mini-project  
 
 #### 1. Folder structure
@@ -207,6 +207,7 @@ Next, there's this portion of code
 Using the method `appendChild()`, we will append the obstacle to the main container. Then, using the property `style`, we will add the left and bottom styles. Remember that we already discussed the meaning of each variable. The top obstacle is a reflection of the bottom obstacle, which means that it has the same values, except for the `style.bottom` property. A gap (set to 430) is added to create the space between both obstacles.
 
 #### 3.6 moveObstacle() function
+Let's break down the function for an easier explanation.
 
 ```js
 function moveObstacle() {
@@ -234,6 +235,73 @@ function moveObstacle() {
 
     let timerId = setInterval(moveObstacle, 20);
 ```
+As you may recall, the value of `obstacleLeft` was initially set equal to the width of the container, which is 500 pixels. In the `moveObstacle()` function, we will subtract 2 pixels from both the bottom and top obstacles in each call, and use the 'style.left' property to update the value.
+Note: Outside the `moveObstacle()` function, there is a `setInterval()` method that calls the `moveObstacle()` function every twenty milliseconds
+
+```js
+      obstacleLeft -= 2;
+      obstacle.style.left = `${obstacleLeft}px`;
+      topObstacle.style.left = `${obstacleLeft}px`;
+```
+In the first conditional, we will check the left position of the obstacle. If the left position is equal to minus sixty pixels, it means the obstacle has just left the game container (the width of the obstacle). In that case, we will remove the obstacle using the `removeChild()` method
+```js
+      if (obstacleLeft === -60) {
+        clearInterval(timerId);
+        gameDisplay.removeChild(obstacle);
+        gameDisplay.removeChild(topObstacle);
+      }
+```
+Let's analyze this part deeply. Here we will put the conditions to execute the `gameOver()` function.
+There are three ways to lose in Flappy Bird: First, if the bird touches the ground. Second, if the bird crashes into the obstacles. And finally, if the bird touches the obstacles while passing through the gap.
+```js
+       if (
+        (obstacleLeft > birdLeft - obstacleWidth &&
+          obstacleLeft < birdRight &&
+          birdLeft === 220 &&
+          (birdBottom < obstacleBottom + groundHeight ||
+            birdBottom > obstacleBottom + gap - (groundHeight + birdHeight))) ||
+        birdBottom === 0
+      ) {
+        gameOver();
+        clearInterval(timerId);
+      }
+```
+We will check the first condition to lose, if the bird chrash into the obstacles
+```js
+       
+        (obstacleLeft > birdLeft - obstacleWidth &&
+          obstacleLeft < birdRight &&
+          birdLeft === 220)
+          
+```
+If the obstacle's left distance is greater than the bird's left distance (set at 220) minus the obstacle's width (set at 60), and also if the obstacle's left distance is lower than the bird's right distance (set at 280), then if either of those conditions is true, it means the bird is already in the position where the obstacle is.
+
+In both the first and second images, I'm trying to show both the upper and lower limits. Please don't get confused in the second one, as we aren't analyzing the second condition for losing, which is in the y-axis. I only put the bird in that position in order to analyze the upper limit in x-axis.
+
+<img width="253" alt="Screenshot 2023-02-14 105741" src="https://user-images.githubusercontent.com/76016357/219260800-d8227efa-c39f-4ade-a61f-8c974e670936.png">--<img width="252" alt="Screenshot 2023-02-14 115802" src="https://user-images.githubusercontent.com/76016357/219261995-c8f87601-dfa9-4f47-b606-40d56462c86c.png">
+
+Then, to check the y-axis conditions, we should keep in mind the absolute position of the obstacles. First, let's remember the height of the obstacle, which is 300 pixels, and the height of the ground, which is 150 pixels.
+
+```js
+        (birdBottom < obstacleBottom + groundHeight ||
+            birdBottom > obstacleBottom + gap - (groundHeight + birdHeight))) || birdBottom === 0
+      )
+```
+The ground height is the middle of the obstacle's height, therefore the value of y (in the image) is just the value of the ground height plus the random height bottom.
+
+<img width="320" alt="Screenshot 2023-02-14 125453" src="https://user-images.githubusercontent.com/76016357/219268647-752cca29-d54c-41da-b48e-da748db82de3.png">
+
+In order to check the top obstacle condition, we should keep an eye on the gap. Let's analyze this case where the height of the obstacle is 486 pixels.
+Remember that we generate the top obtacle bottom taking the random bottom plus the gap, which is 430 pixels.
+
+<img width="348" alt="Screenshot 2023-02-14 144100" src="https://user-images.githubusercontent.com/76016357/219269295-af993dd9-edce-47cc-99a4-f66b9aaebcae.png">
+
+In this case, the random bottom was 56 pixels. We may be tempted to say that the condition goes only as far as that. However, we need to remember the positions of the obstacles: their position is relative to the main container, but the position of the bird is relative to the sky container. Because of this, we should subtract, as we did before, the height of the ground and also the height of the bird.
+
+<img width="399" alt="Screenshot 2023-02-14 145654" src="https://user-images.githubusercontent.com/76016357/219271808-15c72805-63eb-41cc-8eea-f4f1343af260.png">
 
 
-Learn more about [add()](https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/add) method.
+Finally, if the bird touch the bottom, the gameOver() function is also executed.
+
+---------------------
+You can add styles to the project and customize it as you want. I hope you have found this article helpful. Keep coding!
