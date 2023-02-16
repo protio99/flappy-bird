@@ -1,77 +1,74 @@
-body{
-    display: flex;
+body {
+  display: flex;
 }
 
-.game-container{
-    width: 500px;
-    height: 730px;
-    position: absolute;
-    left: 80px;
-
+.game-container {
+  width: 500px;
+  height: 730px;
+  position: absolute;
+  left: 80px;
 }
 
-.sky{
-    background-color: rgb(42, 126, 221);
-    width: 500px;
-    height: 580px ;
-    position: absolute;
+.sky {
+  background-color: rgb(42, 126, 221);
+  width: 500px;
+  height: 580px;
+  position: absolute;
 }
 
-.ground{
-    background-color: rgb(102, 18, 18);
-    width: 500px;
-    height: 150px;
-    position: absolute;
-    top: 580px;
-    z-index: 1;
+.ground {
+  background-color: rgb(102, 18, 18);
+  width: 500px;
+  height: 150px;
+  position: absolute;
+  top: 580px;
+  z-index: 1;
 }
 
-.border-left{
-    width: 80px;
-    height: 790px;
-    position: absolute;
-    background-color: white;
-    z-index: 2;
-
+.border-left {
+  width: 80px;
+  height: 790px;
+  position: absolute;
+  background-color: white;
+  z-index: 2;
 }
 
-.border-right{
-    width: 80px;
-    height: 790px;
-    position: absolute;
-    background-color: white;
-    z-index: 2;
-    left: 580px;
+.border-right {
+  width: 80px;
+  height: 790px;
+  position: absolute;
+  background-color: white;
+  z-index: 2;
+  left: 580px;
 }
 
-.border-top{
-    width: 660px;
-    height: 50px;
-    position: absolute;
-    background-color: white;
-    z-index: 2;
-    top:-50px ;
-
+.border-top {
+  width: 660px;
+  height: 50px;
+  position: absolute;
+  background-color: white;
+  z-index: 2;
+  top: -50px;
 }
 
-.bird{
-    background-color: yellow;
-    position: absolute;
-    width: 60px;
-    height: 45px;
+.bird {
+  background-color: yellow;
+  position: absolute;
+  width: 60px;
+  height: 45px;
 }
 
-.obstacle{
-    background-color: green;
-    width: 60px;
-    height: 300px;
-    position: absolute;
+.obstacle {
+  background-color: green;
+  width: 60px;
+  height: 300px;
+  position: absolute;
 }
 
-.topObstacle{
-    background-color: green;
-    transform: rotate(180deg);
-    width: 60px;
-    height: 300px;
-    position: absolute;
+.topObstacle {
+  background-color: green;
+  transform: rotate(180deg);
+  width: 60px;
+  height: 300px;
+  position: absolute;
 }
