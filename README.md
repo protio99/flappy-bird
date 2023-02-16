@@ -1,4 +1,6 @@
 # Flappy bird/gosh clone :hatched_chick:
+
+<img width="253" alt="animation" src="https://user-images.githubusercontent.com/76016357/219280710-0c134cd6-2607-4cfd-a187-62f10e71c9f8.gif">
 --------------
 *This project was proposed on the freeCodeCamp website in a video tutorial created by the YouTuber and developer Ania Kubów.*
 - *Go to [freeCodeCamp](https://www.freecodecamp.org/espanol/news/40-proyectos-de-javascript-para-principiantes-ideas-faciles-para-empezar-a-codificar-en-js/#c-mo-crear-siete-juegos-cl-sicos-con-ania-kubow) article.*
@@ -127,7 +129,8 @@ This is the largest part of the code, and we'll analyze every part.
     }
     gameDisplay.appendChild(obstacle);
     gameDisplay.appendChild(topObstacle);
-    obstacle.style.left = `${obstacleLeft}px`;
+    obstacle.style.left = `${obstacleLeft}px`;![Animation](https://user-images.githubusercontent.com/76016357/219280329-ae84d5b5-d5c4-4775-8e26-8fe3cbe4025c.gif)
+
     topObstacle.style.left = `${obstacleLeft}px`;
     obstacle.style.bottom = `${obstacleBottom}px`;
     topObstacle.style.bottom = `${obstacleBottom + gap}px`;
@@ -305,3 +308,5 @@ Finally, if the bird touch the bottom, the gameOver() function is also executed.
 
 ---------------------
 You can add styles to the project and customize it as you want. I hope you have found this article helpful. Keep coding!
+
+
